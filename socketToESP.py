@@ -60,6 +60,10 @@ class EspSocketCntrl(threading.Thread):
             logger.debug(f"Timeout connecting")
             self.time_of_last_connection_attempt = time.perf_counter()
             self.update_status(self.STATUS_DISCONNECTED)
+        except ConnectionRefusedError:
+            logger.debug(f"Connection refused")
+            self.time_of_last_connection_attempt = time.perf_counter()
+            self.update_status(self.STATUS_DISCONNECTED)
 
     def update_status(self, status: int):
         # Update the status variable and send it back to main as well
